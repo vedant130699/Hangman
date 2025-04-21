@@ -1,7 +1,9 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.Buffer;
+import java.util.*;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -9,8 +11,23 @@ public class Main {
     public static void main(String[] args) {
         //JAVA HANGMAN GAME
 
+        String filePath = "src\\words.txt";
+
+        ArrayList<String> words = new ArrayList<>();
+        try(BufferedReader reader = new BufferedReader(new FileReader(filePath))){
+            String line;
+            while((line = reader.readLine()) !=null) {
+                words.add(line.trim());
+            }
+        }catch (FileNotFoundException e) {
+            System.out.println("Could not find the file");
+        } catch (IOException e) {
+            System.out.println("Something went wrong");
+        }
+
+        Random random = new Random();
+        String word = words.get(random.nextInt(0, words.size()));
         Scanner sc = new Scanner(System.in);
-        String word = "pizza";
         Set<Character> guessedLetters = new HashSet<>();
         //wordstate to fill the blank letters after guessing
         ArrayList<Character> wordState = new ArrayList<>();
@@ -76,29 +93,29 @@ public class Main {
     public static String getHangmanArt(int wrongGuesses) {
         return switch (wrongGuesses) {
             case 0 -> """
-                    
-                    
-                    
+
+
+
                     """;
             case 1 -> """
                         O
-                        
-                    
+
+
                     """;
             case 2 -> """
                         O
                         |
-                    
+
                     """;
             case 3 -> """
                         O
                        /|
-                    
+
                     """;
             case 4 -> """
                         O
                        /|\\
-                    
+
                     """;
             case 5 -> """
                         O
